@@ -1,4 +1,11 @@
-<div>
+<div
+  [class]="{
+    status: true,
+    'status-online': currentStatus === 'online',   
+    'status-offline': currentStatus === 'offline',
+    'status-unknown': currentStatus === 'unknown'
+  }"
+>
   @if (currentStatus === 'online') {
   <p>Servers are online</p>
   <p>All systems are operational.</p>
@@ -10,3 +17,17 @@
   <p>Fetching server status failed.</p>
   }
 </div>
+
+<!-- Dynamic CSS Class Binding: -->
+<!-- <div
+  [class]="{
+  status: true,
+  'status-online': currentStatus === 'online',
+  'status-offline': currentStatus === 'offline' 
+}"
+> -->
+<!-- status: true ensures that the status class is always applied. -->
+<!-- 'status-online': currentStatus === 'online' adds the status-online class if currentStatus is 'online'. -->
+<!-- we need 'status-online' and not just status-online because of the '-' -->
+<!-- 'status-offline': currentStatus === 'offline' adds the status-offline class if currentStatus is 'offline'. -->
+<!-- 'status-unknown': currentStatus === 'unknown': adds the class status-unknown if the currentStatus is 'unknown'. -->

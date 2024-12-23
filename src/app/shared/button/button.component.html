@@ -1,0 +1,13 @@
+<span>
+    <ng-content />
+</span>
+<!-- <ng-content select=".icon" /> --> <!-- if we have a class="icon" in header.component.html-->
+ <span class="icon">
+    <ng-content select="icon" />  <!-- if we have ngProjectAs="icon" in header.component.html -->
+    <!-- <ng-content select=".icon" /> --> <!-- if we have a class="icon" in header.component.html-->
+ </span>
+
+
+<!-- In Angular, the <ng-content> directive is used for content projection, which allows you to insert content into a component from its parent. -->
+<!-- The select attribute in <ng-content> allows you to filter which content should be projected into that specific <ng-content> element based on selectors. -->
+<!-- ng-content select=".icon" -> only elements with the class icon will be projected. -->
