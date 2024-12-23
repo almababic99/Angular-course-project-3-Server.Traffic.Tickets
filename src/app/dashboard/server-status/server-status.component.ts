@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnDestroy, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-server-status',
@@ -9,11 +9,29 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ServerStatusComponent implements OnInit {
   currentStatus: 'online' | 'offline' | 'unknown' = 'offline';
+  // private interval?: ReturnType<typeof setInterval>; // A private property that stores the return value of the setInterval function. 
+
+  private destroyRef = inject(DestroyRef);  // uses Angular's inject() function to inject a DestroyRef instance into the component.
 
   constructor() {}
 
-  ngOnInit() {
-    setInterval(() => {
+  ngOnInit() {   // Runs once after Angular has initialized all the component's inputs.
+    console.log('ON INIT');
+
+      // using interval:
+    // this.interval = setInterval(() => {
+    //   const rnd = Math.random(); 
+    //   if (rnd < 0.5) {
+    //     this.currentStatus = 'online';
+    //   } else if (rnd < 0.9) {
+    //     this.currentStatus = 'offline';
+    //   } else {
+    //     this.currentStatus = 'unknown';
+    //   }
+    // }, 5000);
+
+      // using destroyRef:
+    const interval = setInterval(() => {
       const rnd = Math.random(); 
       if (rnd < 0.5) {
         this.currentStatus = 'online';
@@ -23,7 +41,28 @@ export class ServerStatusComponent implements OnInit {
         this.currentStatus = 'unknown';
       }
     }, 5000);
+
+    this.destroyRef.onDestroy(() => {   // destroyRef.onDestroy() registers a callback to be executed when the component is destroyed.
+      clearInterval(interval);   // clearInterval(interval); is called inside onDestroy() to stop the interval when the component is destroyed, preventing any potential memory leaks.
+    });  // Instead of relying on ngOnDestroy() to clean up resources, you can directly use destroyRef.onDestroy() for this purpose.
+
+    // As an alternative to the ngOnDestroy method, you can inject an instance of DestroyRef. You can register a callback to be invoked upon the component's destruction by calling the onDestroy method of DestroyRef.
+    // You can pass the DestroyRef instance to functions or classes outside your component. Use this pattern if you have other code that should run some cleanup behavior when the component is destroyed.
+    // You can also use DestroyRef to keep setup code close to cleanup code, rather than putting all cleanup code in the ngOnDestroy method.
+    // With destroyRef, you can trigger cleanup tasks using the onDestroy() method directly.
   }
+
+  ngAfterViewInit() {  // Runs once after the component's view has been initialized.
+    console.log('AFTER VIEW INIT');
+  }
+
+  // ngOnDestroy() {   // Runs once before the component is destroyed.
+  //   // because of memory leak we need to clean up the interval that keeps on going behind the scenes whenever the component is removed
+  //   clearTimeout(this.interval);
+  // }
+
+  
+
 }
 
 // When you use implements in a class, you're telling TypeScript that your class will follow the structure defined by the interface. This means that the class must have all the properties and methods declared in the interface, with matching types.
