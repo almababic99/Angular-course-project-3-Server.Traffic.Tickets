@@ -1,0 +1,17 @@
+<div class="dashboard-item">
+    <article>
+        <header>
+          <!-- First way (Using @Input as a decorator): -->
+          <!-- <img [src]="image.src" [alt]="image.alt" /> -->
+
+          <!-- Second way (Using input as a signal): -->
+          <img [src]="image().src" [alt]="image().alt" />
+
+          <h2>{{ title() }}</h2>
+        </header>
+
+        <ng-content />
+        <!-- When you create a component in Angular, you often want to allow the parent component to pass content (like HTML, text, or other components) into the child component. 
+         The <ng-content /> tag serves as a placeholder where the parent content will be inserted. -->
+      </article>
+</div>
