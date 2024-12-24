@@ -3,7 +3,7 @@
   <ul>
     @for (ticket of tickets; track ticket.id) {   <!-- Going through tickets array -->
       <li>
-        <app-ticket [data]="ticket" />    <!--  the data attribute is used to pass the ticket object to the app-ticket component -->
+        <app-ticket [data]="ticket" (close)="onCloseTicket(ticket.id)" />    <!--  the data attribute is used to pass the ticket object to the app-ticket component -->
       </li>
     } @empty {  <!-- if there are no tickets (if the tickets array is empty) -->
       <p>No tickets available</p>
