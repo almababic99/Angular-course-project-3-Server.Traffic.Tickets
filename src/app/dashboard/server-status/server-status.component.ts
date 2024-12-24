@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, DestroyRef, effect, inject, OnDestroy, OnInit, signal } from '@angular/core';
 
 @Component({
   selector: 'app-server-status',
@@ -8,12 +8,21 @@ import { Component, DestroyRef, inject, OnDestroy, OnInit } from '@angular/core'
   styleUrl: './server-status.component.css'
 })
 export class ServerStatusComponent implements OnInit {
-  currentStatus: 'online' | 'offline' | 'unknown' = 'offline';
+  // currentStatus: 'online' | 'offline' | 'unknown' = 'offline';
+  currentStatus = signal<'online' | 'offline' | 'unknown'>('offline');  // a signal 
   // private interval?: ReturnType<typeof setInterval>; // A private property that stores the return value of the setInterval function. 
 
   private destroyRef = inject(DestroyRef);  // uses Angular's inject() function to inject a DestroyRef instance into the component.
 
-  constructor() {}
+  constructor() {
+    effect(() => {
+      console.log(this.currentStatus());
+    });
+    // effect is a reactive function that listens to changes in signals and automatically triggers side effects when the values of those signals change.
+    // The effect function is called with a callback function. This callback runs immediately when the effect is first registered and any time any of the values inside the callback change.
+    // Inside the callback, you reference reactive signals (like this.currentStatus() in this case). When any of these reactive signals change, Angular automatically re-runs the callback.
+    // The effect will track the currentStatus signal, and each time it changes (due to the interval updating it), the effect callback will be triggered.
+  }
 
   ngOnInit() {   // Runs once after Angular has initialized all the component's inputs.
     console.log('ON INIT');
@@ -34,11 +43,14 @@ export class ServerStatusComponent implements OnInit {
     const interval = setInterval(() => {
       const rnd = Math.random(); 
       if (rnd < 0.5) {
-        this.currentStatus = 'online';
+        // this.currentStatus = 'online';
+        this.currentStatus.set('online');
       } else if (rnd < 0.9) {
-        this.currentStatus = 'offline';
+        // this.currentStatus = 'offline';
+        this.currentStatus.set('offline');
       } else {
-        this.currentStatus = 'unknown';
+        // this.currentStatus = 'unknown';
+        this.currentStatus.set('unknown');
       }
     }, 5000);
 

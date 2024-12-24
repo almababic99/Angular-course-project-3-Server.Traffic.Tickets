@@ -1,3 +1,23 @@
-<div id="new-ticket">
-  <app-new-ticket />
+<!-- Displaying the List of Tickets: -->
+<div>
+  <ul>
+    @for (ticket of tickets; track ticket.id) {   <!-- Going through tickets array -->
+      <li>
+        <app-ticket [data]="ticket" />    <!--  the data attribute is used to pass the ticket object to the app-ticket component -->
+      </li>
+    } @empty {  <!-- if there are no tickets (if the tickets array is empty) -->
+      <p>No tickets available</p>
+    }
+  </ul>
 </div>
+
+<!-- Adding a New Ticket: -->
+<div id="new-ticket">
+  <app-new-ticket (add)="onAdd($event)" />
+</div>
+
+<!-- (add)="onAdd($event)": This syntax is used to listen to an event emitted by the app-new-ticket component. In this case, you're listening for the add event. -->
+<!-- (add): This specifies the name of the event you're listening for, which corresponds to the event that the child component (NewTicketComponent) emits. In this case, the add event is triggered when the user submits the form in NewTicketComponent. -->
+<!-- onAdd($event): This is the method that will be invoked in the parent component when the add event is emitted. $event contains the data that was passed with the event. -->
+<!-- $event will contain the object emitted by the add event, which will have the title and text properties (from the form fields in the NewTicketComponent). -->
+<!-- onAdd() is defined in tickets.component.ts --> 
