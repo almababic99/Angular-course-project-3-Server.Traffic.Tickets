@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, viewChild, ViewChild } from '@angular/core';
 import { ControlComponent } from "../../../shared/control/control.component";
 import { ButtonComponent } from '../../../shared/button/button.component';
 import { FormsModule } from '@angular/forms';
@@ -11,13 +11,18 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './new-ticket.component.css'
 })
 export class NewTicketComponent {
-  @ViewChild('form') form?: ElementRef<HTMLFormElement>;
+  // first way of using ViewChild:
+  // @ViewChild('form') private form?: ElementRef<HTMLFormElement>;
+
+  // second way of using viewChild - signal function:
+  private form = viewChild.required<ElementRef<HTMLFormElement>>('form');
 
   onSubmit(title: string, ticketText: String) {
     console.log(title);
     console.log(ticketText);
 
-    this.form?.nativeElement.reset();  // reset() clears all the input elements that are inside of the form if the form is not undefinded (form?)
+    // this.form?.nativeElement.reset();  // reset() clears all the input elements that are inside of the form if the form is not undefinded (form?) -> for @ViewChild('form') private form?: ElementRef<HTMLFormElement>;
+    this.form().nativeElement.reset();   // reset() clears all the input elements that are inside of the form. we need form() because we are using signals -> for private form = viewChild.required<ElementRef<HTMLFormElement>>('form');
   }
 }
 
