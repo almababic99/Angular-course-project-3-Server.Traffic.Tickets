@@ -1,14 +1,24 @@
-<form>
-    <app-control label="Title">
-      <input name="title" id="title" />
-    </app-control>
-    <app-control label="Request">
-      <textarea name="request" id="request" rows="3"></textarea>
-    </app-control>
-    <p>
-      <button appButton>
-          Submit 
-          <span ngProjectAs="icon">⌲</span>
-      </button>
-    </p>
-  </form>
+<form (ngSubmit)="onSubmit(titleInput.value, textInput.value)" #form>
+  <!-- (ngSubmit) listens for the submit event. onSubmit() is the method you want to call when the form is submitted implemented in new-ticket.component.ts -->
+  <app-control label="Title">
+    <input name="title" id="title" #titleInput />
+  </app-control>
+  <app-control label="Request">
+    <textarea name="request" id="request" rows="3" #textInput></textarea>
+  </app-control>
+  <p>
+    <button appButton>
+      Submit
+      <span ngProjectAs="icon">⌲</span>
+    </button>
+  </p>
+</form>
+
+<!-- #titleInput and #textInput are template variables -->
+<!-- #titleInput is a reference to the <input> element (where users can enter the title of the ticket). -->
+<!-- #textInput is a reference to the <textarea> element (where users can enter the description of the ticket). -->
+<!-- These variables can be used to access the properties of the DOM elements (like value, focus, validity, etc.) within the template. -->
+<!-- The #titleInput and #textInput variables hold references to the input elements, and you can access their properties (like .value) in the ngSubmit event handler. -->
+<!-- When the form is submitted, Angular will pass the .value of these input elements to the onSubmit() method in new-ticket.component.ts  -->
+
+<!-- #form: The template reference variable for the form element, accessed through @ViewChild in new-ticket.component.ts -->
